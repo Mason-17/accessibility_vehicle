@@ -87,7 +87,7 @@ while 1
 			disp('turn to open space') 
 			brick.MoveMotor('A',-40); 
 			brick.MoveMotor('B',45); 
-			pause(0.77) 
+			pause(0.85) 
 			brick.StopAllMotors(); 
 			brick.MoveMotor('A',45); 
 			brick.MoveMotor('B',49); 
@@ -114,7 +114,7 @@ while 1
 		end
 		
 		%distance too close 
-		if distance==225 
+		if distance==225 ||distance<5
 			disp('distance too close, stop') 
 			brick.StopAllMotors(); 
 			pause(1); 
@@ -125,7 +125,7 @@ while 1
 			disp('turn to another direction') 
 			brick.MoveMotor('A',-45); 
 			brick.MoveMotor('B',45); 
-			pause(1) 
+			pause(1.2) 
 			%continue goes a distance 
 			%disp('go') 
 			brick.MoveMotor('A',45); 
@@ -146,7 +146,7 @@ while 1
 		disp('turn to left') 
 		brick.MoveMotor('A',40); 
 		brick.MoveMotor('B',-45); 
-		pause(0.6) 
+		pause(0.85) 
 		%continue goes a distance 
 		%disp('go') 
 		brick.MoveMotor('A',45); 
