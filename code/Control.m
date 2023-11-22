@@ -1,9 +1,14 @@
 brick.SetColorMode(3,2); 
 color = brick.ColorCode(3); 
+left_flag = true;
 while 1 
-	touch=brick.TouchPressed(1); 
-	distance = brick.UltrasonicDist(2); 
-	color = brick.ColorCode(3); 
+	touch=brick.TouchPressed(1);
+    color = brick.ColorCode(3); 
+    if left_flag == true
+        distance = brick.UltrasonicDist(2);
+    end
+	distance = brick.UltrasonicDist(2);
+    left_flag = true;
 	while touch==0 
 		%when not sensoring color 
 		brick.MoveMotor('A',45); 
@@ -17,9 +22,15 @@ while 1
 			display(color) 
 			brick.StopAllMotors(); 
 			pause(1) 
-			brick.MoveMotor('A',45); 
-			brick.MoveMotor('B',49); 
+            brick.MoveMotor('A',49)
+			%brick.MoveMotor('A',45); 
+			%brick.MoveMotor('B',49);
+            brick.MoveMotor('B',43);
+            %potentially remove these two lines
+            pause(.1)
+            brick.MoveMotor('A',45)
 			color=0; 
+            left_flag = true;
 		end
 		
 		color = brick.ColorCode(3);
@@ -69,30 +80,35 @@ while 1
 			Keyboard(); 
 			brick.MoveMotor('A',45); 
 			brick.MoveMotor('B',49); 
-			pause(3) 
+			pause(2) %og 3
 		end 
 		color = brick.ColorCode(3); 
 		
 		%when distance>60 
-		if distance>60 
+		if distance>60 && left_flag == true 
+            
 			disp('distance > 60') 
 			%continue goes a distance to make the car turn 
-			disp('go to make the car turn') 
-			brick.MoveMotor('A',45); 
-			brick.MoveMotor('B',49); 
+			disp('car goes forward a distance') 
+			brick.MoveMotor('A',45);
+			brick.MoveMotor('B',49);
+            disp('pause for a bit')
 			pause(0.5); 
 			disp('stop') 
 			brick.StopAllMotors(); 
 			pause(1); 
 			disp('turn to open space') 
-			brick.MoveMotor('A',-40); 
-			brick.MoveMotor('B',45); 
-			pause(0.85) 
+			brick.MoveMotor('A',-32); %og -35
+			brick.MoveMotor('B',42); %og 40
+            disp('pause second time')
+			pause(1) %og .85
 			brick.StopAllMotors(); 
+            disp('going forward again after turn to open space')
 			brick.MoveMotor('A',45); 
 			brick.MoveMotor('B',49); 
-			pause(2); 
-			distance = brick.UltrasonicDist(2); 
+            disp('pausing yet again')
+			pause(1); %og ~2
+			%distance = brick.UltrasonicDist(2); 
 			%when detects a new open space 
 			%{ 
 			if distance>60 
@@ -110,11 +126,12 @@ while 1
 			brick.MoveMotor('AB',50) 
 			pause(1) 
 		%} 
-			%distance = brick.UltrasonicDist(2); 
+			%distance = brick.UltrasonicDist(2);
+            left_flag = false;
 		end
 		
 		%distance too close 
-		if distance==225 ||distance<5
+		if distance==225 || distance<5
 			disp('distance too close, stop') 
 			brick.StopAllMotors(); 
 			pause(1); 
@@ -123,8 +140,8 @@ while 1
 			brick.MoveMotor('B',-49); 
 			pause(1) 
 			disp('turn to another direction') 
-			brick.MoveMotor('A',-45); 
-			brick.MoveMotor('B',45); 
+			brick.MoveMotor('A',-35); 
+			brick.MoveMotor('B',40); 
 			pause(1.2) 
 			%continue goes a distance 
 			%disp('go') 
@@ -152,6 +169,7 @@ while 1
 		brick.MoveMotor('A',45); 
 		brick.MoveMotor('B',49); 
 		pause(1); 
+        left_flag = true;
 		distance = brick.UltrasonicDist(2); 
 	end 
 	touch=brick.TouchPressed(1); 
